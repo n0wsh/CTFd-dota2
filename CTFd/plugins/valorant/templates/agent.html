@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Choose your agent</title>
+	<link rel="stylesheet" type="text/css" href="/plugins/valorant/assets/fonts/tungsten.css">
+	<link rel="stylesheet" type="text/css" href="/plugins/valorant/assets/css/agent-page.css">
+</head>
+<body class="w-screen h-screen flex-col items-center">
+	<div class="mb-5 flex justify-center panel">
+		<picture id="artwork">
+			<source type="image/webp">
+			<img class="block w-full h-full">
+		</picture>
+	</div>
+	<button id="submit" class="mt-auto mb-5 text-white font-tungsten lock-in" onclick="submit()" disabled>Lock in</button>
+	<div class="mb-5 flex-row flex-wrap selector">
+		{% for agent in agents %}
+		<div class="relative flex cursor-pointer agent-card" data-agent="{{ agent }}">
+			<picture>
+				<source srcset="/plugins/valorant/assets/agents/{{agent}}/icon.webp" type="image/webp">
+				<img class="block w-full h-full" src="/plugins/valorant/assets/agents/{{agent}}/icon.png" alt="{{agent}}" />
+			</picture>
+			<div class="absolute top-0 left-0 w-full h-full agent-overlay"></div>
+		</div>
+		{% endfor %}
+	</div>
+	<form action="/agent" method="POST" id="selection" hidden>
+		<input type="text" name="nonce" value="{{ Session.nonce }}" />
+		<input type="text" name="agent" value="" />
+	</form>
+	<script id="chosen_agents" type="application/json">{{ chosen_agents | tojson }}</script>
+	<script src="/plugins/valorant/assets/js/select-agent.js" defer async></script>
+</body>
+</html>

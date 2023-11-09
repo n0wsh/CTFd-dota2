@@ -1,0 +1,89 @@
+version: '2'
+
+services:
+  scoreboard-server:
+    build: ./scoreboard-server
+    environment:
+      - "WEBHOOK_SECRET=d20c819601d7063c5caf3477105f54d0466fae660fef73824437edc54212f7ac"
+    restart: always
+    networks:
+      default:
+      internal:
+  ctfd:
+    build: .
+    user: root
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - UPLOAD_FOLDER=/var/uploads
+      - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
+      - REDIS_URL=redis://cache:6379
+      - WORKERS=1
+      - LOG_FOLDER=/var/log/CTFd
+      - ACCESS_LOG=-
+      - ERROR_LOG=-
+      - REVERSE_PROXY=true
+      - VALORANT_WEBHOOK_URL=http://scoreboard-server:3000/api/webhook
+      - VALORANT_WEBHOOK_SECRET=d20c819601d7063c5caf3477105f54d0466fae660fef73824437edc54212f7ac
+    volumes:
+      - .data/CTFd/logs:/var/log/CTFd
+      - .data/CTFd/uploads:/var/uploads
+      - .:/opt/CTFd:ro
+    depends_on:
+      - db
+    networks:
+        default:
+        internal:
+  scoreboard:
+    build: ./scoreboard
+    restart: always
+    volumes:
+      - .:/opt/CTFd
+    environment:
+      - CTFD_API_URL=http://ctfd:8000/api/v1
+      - CTFD_API_KEY=c1af081292b8b7c034b82449d2abdb8a8179ece49656f03254550e284f5720a0
+      # - NEXT_PUBLIC_BACKEND_URL=
+    networks:
+        default:
+        internal:
+  nginx:
+    image: nginx:stable
+    restart: always
+    volumes:
+      - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - ctfd
+      - scoreboard
+      - scoreboard-server
+
+  db:
+    image: mariadb:10.4.12
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=ctfd
+      - MYSQL_USER=ctfd
+      - MYSQL_PASSWORD=ctfd
+      - MYSQL_DATABASE=ctfd
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    networks:
+        internal:
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  cache:
+    image: redis:4
+    restart: always
+    volumes:
+    - .data/redis:/data
+    networks:
+        internal:
+networks:
+    default:
+    internal:
+        internal: true
