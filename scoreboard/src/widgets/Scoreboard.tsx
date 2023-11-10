@@ -41,33 +41,33 @@ export function ScoreboardWidget({
     initialScoreboard,
   });
 
-  const scoreboardMock = [
-    { name: "Anti-Mage", score: 900, solves: 3, fails: 2 },
-    { name: "Axe", score: 800, solves: 2, fails: 2 },
-    { name: "Bane", score: 700, solves: 1, fails: 2 },
-    { name: "Bloodseeker", score: 600, solves: 1, fails: 2 },
-    { name: "Crystal Maiden", score: 500, solves: 1, fails: 2 },
-    { name: "Drow Ranger", score: 400, solves: 1, fails: 2 },
-    { name: "Earthshaker", score: 300, solves: 1, fails: 2 },
-    { name: "Juggernaut", score: 200, solves: 1, fails: 2 },
-    { name: "Mirana", score: 100, solves: 1, fails: 2 },
-    { name: "Morphling", score: 0, solves: 0, fails: 0 },
-  ];
+  // const scoreboardMock = [
+  //   { name: "Anti-Mage", score: 900, solves: 3, fails: 2 },
+  //   { name: "Axe", score: 800, solves: 2, fails: 2 },
+  //   { name: "Bane", score: 700, solves: 1, fails: 2 },
+  //   { name: "Bloodseeker", score: 600, solves: 1, fails: 2 },
+  //   { name: "Crystal Maiden", score: 500, solves: 1, fails: 2 },
+  //   { name: "Drow Ranger", score: 400, solves: 1, fails: 2 },
+  //   { name: "Earthshaker", score: 300, solves: 1, fails: 2 },
+  //   { name: "Juggernaut", score: 200, solves: 1, fails: 2 },
+  //   { name: "Mirana", score: 100, solves: 1, fails: 2 },
+  //   { name: "Morphling", score: 0, solves: 0, fails: 0 },
+  // ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log(scoreboard);
-      try {
-        const res = await axios.get("https://api.opendota.com/api/heroStats");
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     console.log(scoreboard);
+  //     try {
+  //       const res = await axios.get("https://api.opendota.com/api/heroStats");
 
-        setHeroData(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  //       setHeroData(res.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const requestFullscreen = (event: MouseEvent) => {
     if (event.target === event.currentTarget) {

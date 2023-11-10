@@ -7,12 +7,12 @@ from CTFd.utils.dates import ctf_started, ctf_ended
 
 from .models import AgentChoice
 
-valorant_namespace = Namespace("valorant", "Endpoint to retrieve Valorant data")
+valorant_namespace = Namespace("valorant", "Endpoint to retrieve Dota 2 data")
 
 @valorant_namespace.route("/picks")
 class AgentPickList(Resource):
 	@valorant_namespace.doc(
-		description="Get a list of all team and their agent picks",
+		description="Get a list of all team and their hero picks",
 		responses={
 			200: "Success",
 		},
