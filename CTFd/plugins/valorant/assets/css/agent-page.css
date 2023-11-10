@@ -81,10 +81,11 @@ body {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .hero-button-container {
-  width: 700px;
+  width: 800px;
   height: 100%;
   overflow: hidden;
   background-color: #000;
+  box-shadow: 0 0 10px 0 #000;
 }
 .hero-card-name {
   display: flex;

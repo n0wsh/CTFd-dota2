@@ -7,7 +7,7 @@ function setSelectedAgent(agent) {
         artwork.style.marginRight = "-30px";
         break;
       case "spectre":
-        artwork.style.marginRight = "-100px";
+        artwork.style.marginRight = "-120px";
         break;
       case "windranger":
         artwork.style.marginRight = "-180px";
@@ -15,11 +15,8 @@ function setSelectedAgent(agent) {
       case "queenofpain":
         artwork.style.marginRight = "-80px";
         break;
-      case "wraithking":
-        artwork.style.marginRight = "-100px";
-        break;
       case "ogremagi":
-        artwork.style.marginRight = "-140px";
+        artwork.style.marginRight = "-160px";
         break;
       case "earthshaker":
         artwork.style.marginRight = "-140px";
