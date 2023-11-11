@@ -9,10 +9,12 @@ export function AgentPick({
   agent,
   layout = "ltr",
   team,
+  color,
 }: {
   layout?: "ltr" | "rtl";
   team: Team;
   agent: string | null;
+  color: string;
 }) {
   return (
     <div
@@ -21,12 +23,18 @@ export function AgentPick({
         layout === "ltr" ? "flex-row" : "flex-row-reverse"
       )}
     >
-      <div className="border-[0.5px] p-[2px] border-white">
-        <div className="w-[5em] h-[5em] bg-white/30">
+      <div
+        className={classNames(
+          "shadow-[#000_0_0_10px_1px]",
+          agent ? "border-t-4" : "border-b-4"
+        )}
+        style={{ borderColor: color }}
+      >
+        <div className="w-[118px] h-[66px] bg-[#3d4857]">
           {agent && (
             <Image
-              width="100%"
-              height="100%"
+              width={100}
+              height={100}
               layout="responsive"
               objectFit="contain"
               src={`/assets/agents/${agent}/icon.png`}

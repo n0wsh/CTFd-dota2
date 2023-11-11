@@ -1,6 +1,6 @@
 import Image from "next/image";
 import classNames from "classnames";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent } from "react";
 
 import { ScoreboardItem } from "@/server/scoreboard";
 import { SoundsManifest } from "@/server/sounds";
@@ -8,18 +8,12 @@ import { SoundsManifest } from "@/server/sounds";
 import agentData from "@/data/agents.json";
 import { useAgentPicks } from "@/hooks/useAgentPicks";
 import { useScoreboard } from "@/hooks/useScoreboard";
-import axios from "axios";
 
 export type ScoreboardInitialData = {
   agentPicks: Record<string, string>;
   scoreboard: ScoreboardItem[];
   sounds: SoundsManifest;
 };
-
-interface HeroData {
-  localized_name: string;
-  img: string;
-}
 
 export function ScoreboardWidget({
   endAt,
@@ -33,7 +27,6 @@ export function ScoreboardWidget({
   initialData: ScoreboardInitialData;
 }) {
   const { agentPicks } = useAgentPicks({ initialAgentPicks });
-  const [heroData, setHeroData] = useState<HeroData[]>([]);
   const { scoreboard } = useScoreboard({
     endAt,
     sounds,
@@ -41,44 +34,11 @@ export function ScoreboardWidget({
     initialScoreboard,
   });
 
-  // const scoreboardMock = [
-  //   { name: "Anti-Mage", score: 900, solves: 3, fails: 2 },
-  //   { name: "Axe", score: 800, solves: 2, fails: 2 },
-  //   { name: "Bane", score: 700, solves: 1, fails: 2 },
-  //   { name: "Bloodseeker", score: 600, solves: 1, fails: 2 },
-  //   { name: "Crystal Maiden", score: 500, solves: 1, fails: 2 },
-  //   { name: "Drow Ranger", score: 400, solves: 1, fails: 2 },
-  //   { name: "Earthshaker", score: 300, solves: 1, fails: 2 },
-  //   { name: "Juggernaut", score: 200, solves: 1, fails: 2 },
-  //   { name: "Mirana", score: 100, solves: 1, fails: 2 },
-  //   { name: "Morphling", score: 0, solves: 0, fails: 0 },
-  // ];
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     console.log(scoreboard);
-  //     try {
-  //       const res = await axios.get("https://api.opendota.com/api/heroStats");
-
-  //       setHeroData(res.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const requestFullscreen = (event: MouseEvent) => {
     if (event.target === event.currentTarget) {
       document.body.requestFullscreen().catch(() => {});
     }
   };
-
-  const myLoader = ({ src }: { src: string }) => {
-    return src;
-  };
-
   return (
     <div className="w-screen h-screen bg-icebox bg-cover backdrop-blur-xl">
       <div className="w-full h-full bg-white/5 backdrop-blur-sm">
@@ -86,19 +46,21 @@ export function ScoreboardWidget({
           className="w-full h-full flex justify-center overflow-scroll"
           onClick={requestFullscreen}
         >
-          <div className="w-3/4 bg-gray-700 bg-opacity-60">
+          <div className="w-3/4 bg-gradient-to-b from-[#4a4e59cc] to-[#121920cc]">
             <div className="w-full h-8 grid grid-flow-row-dense grid-cols-5">
-              <div className="h-full col-span-2 text-slate-200 bg-gray-500 bg-opacity-90 flex justify-center items-center">
+              <div className="h-full col-span-2 text-slate-200 flex justify-center items-center">
                 <p>TEAMS</p>
               </div>
-              <div className="h-full text-yellow-600 bg-gray-500 bg-opacity-90 flex justify-center items-center">
-                <Image src={"/assets/gold-icon.png"} width={16} height={16} />
+              <div className="h-full text-yellow-600 flex justify-center items-center">
+                <div style={{ width: "16px", height: "16px" }}>
+                  <Image width={16} height={16} src={"/assets/gold-icon.png"} />
+                </div>
                 <p style={{ marginLeft: "4px" }}>GOLD</p>
               </div>
-              <div className="h-full  text-gray-300 bg-gray-500 bg-opacity-90 flex justify-center items-center">
+              <div className="h-full text-gray-300 flex justify-center items-center">
                 <p>KILLS</p>
               </div>
-              <div className="h-full text-red-400 bg-gray-500 bg-opacity-90 flex justify-center items-center">
+              <div className="h-full text-red-400 flex justify-center items-center">
                 <p>DEATHS</p>
               </div>
             </div>
@@ -108,68 +70,54 @@ export function ScoreboardWidget({
                 <div
                   key={team.name}
                   className={classNames(
-                    "w-full h-16 mt-[2px] bg-opacity-80 grid grid-flow-row-dense grid-cols-5 items-center",
-                    "bg-zinc-800"
+                    "w-full h-16 mt-[2px] bg-opacity-90 grid grid-flow-row-dense grid-cols-5 items-center",
+                    "bg-[#21262f]"
                   )}
                 >
                   <div className="h-full flex flex-row items-center col-span-2">
-                    <div className="w-16">
-                      {team.name && heroData.length !== 0 ? (
+                    <div className="w-16 border border-black ml-5">
+                      {agentPicks[team.name] && (
                         <Image
-                          width="100%"
-                          height="100%"
-                          layout="responsive"
-                          objectFit="contain"
+                          width={118}
+                          height={64}
                           className="opacity-100"
-                          src={
-                            heroData.length !== 0
-                              ? `https://api.opendota.com${
-                                  heroData.find(
-                                    (el, index) =>
-                                      el?.localized_name === team.name
-                                  )?.img
-                                }`
-                              : ""
-                          }
-                          loader={myLoader}
-                          alt={`${team.name} icon`}
+                          src={`/assets/agents/${
+                            agentPicks[team.name]
+                          }/icon.png`}
+                          alt={`${agentPicks[team.name]} icon`}
                         />
-                      ) : (
-                        <></>
                       )}
                     </div>
-                    <p
-                      className={classNames(
-                        "px-8 font-medium text-lg text-slate-300",
-                        textColor
-                      )}
-                    >
-                      {agentPicks[team.name]
-                        ? `${team.name} - ${
-                            agentData[
-                              agentPicks[team.name] as keyof typeof agentData
-                            ].name
-                          }`
-                        : team.name}
-                    </p>
+                    <div className="flex flex-col ml-2">
+                      <p className={"text-lg text-[#fff] leading-5"}>
+                        {team.name}
+                      </p>
+                      <p className="text-[#535755] text-sm leading-4">
+                        {agentPicks[team.name] &&
+                          agentData[
+                            agentPicks[team.name] as keyof typeof agentData
+                          ].name.toUpperCase()}
+                      </p>
+                    </div>
                   </div>
                   <p
                     className={classNames(
-                      "opacity-100 text-center font-medium text-lg text-yellow-400",
+                      "opacity-100 text-center font-medium text-lg text-[#fdca33]",
                       textColor
                     )}
                   >
                     {scoreboard.find((listing) => listing.name === team.name)
                       ?.score ?? 0}
                   </p>
-                  <p
-                    className={classNames(
-                      "opacity-100 text-center font-medium text-lg text-gray-300",
-                      textColor
-                    )}
+                  <div
+                    className={
+                      "opacity-100 h-full flex items-center justify-center font-medium text-lg text-gray-300"
+                    }
                   >
-                    {team.solves.toString().padStart(2, "0")}
-                  </p>
+                    <p className="h-full w-[32px] bg-[#1e222a] flex items-center justify-center">
+                      {team.solves.toString()}
+                    </p>
+                  </div>
                   <p
                     className={classNames(
                       "opacity-100 text-center font-medium text-lg",
@@ -177,7 +125,7 @@ export function ScoreboardWidget({
                     )}
                     style={{ color: "#F87171" }}
                   >
-                    {team.fails.toString().padStart(2, "0")}
+                    {team.fails.toString()}
                   </p>
                 </div>
               );

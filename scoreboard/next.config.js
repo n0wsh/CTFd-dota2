@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
-  images: {
-    domains: ["api.opendota.com"],
-  },
 };
 
 module.exports = nextConfig;

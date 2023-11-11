@@ -58,13 +58,14 @@ const submitButton = document.getElementById("submit");
 const agentSelections = new Map();
 function handleSelection(agent) {
   const selectionCount = agentSelections.get(agent);
+  console.log(agentSelections);
   if (!agentSelections.has(agent)) {
     agentSelections.set(agent, 1);
   } else {
     agentSelections.set(agent, selectionCount + 1);
   }
 
-  if (selectionCount >= 1) {
+  if (agent) {
     disableAgent(agent);
     if (getSelectedAgent() === agent) {
       setSelectedAgent(null);
