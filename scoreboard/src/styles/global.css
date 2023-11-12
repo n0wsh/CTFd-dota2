@@ -2,13 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url(https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap);
-.bg-valorant {
-  background-image: url("/assets/dotabackground.jpg");
+@font-face {
+  font-family: "radiance-regular";
+  src: url("./radiance-regular.otf");
+}
+.bg-heropick {
+  background-image: url("/assets/heropickbackground.png");
 }
 
 .bg-split {
-  background-image: url("/assets/split.webp");
+  background-image: url("/assets/dotabackground.jpg");
 }
 
 .bg-icebox {
@@ -17,5 +20,5 @@
 }
 
 body {
-  font-family: "Josefin Sans";
+  font-family: "radiance-regular";
 }
