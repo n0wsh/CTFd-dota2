@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "radiance-regular";
+  src: url("./radiance-regular.otf");
+}
 .bg-heropick {
   background-image: url("/assets/heropickbackground.png");
 }
@@ -12,4 +17,8 @@
 .bg-icebox {
   background-image: url("/assets/dotabackground2.jpg");
   background-position: center;
+}
+
+body {
+  font-family: "radiance-regular";
 }

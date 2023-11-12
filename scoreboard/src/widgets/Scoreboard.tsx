@@ -53,7 +53,12 @@ export function ScoreboardWidget({
               </div>
               <div className="h-full text-yellow-600 flex justify-center items-center">
                 <div style={{ width: "16px", height: "16px" }}>
-                  <Image width={16} height={16} src={"/assets/gold-icon.png"} />
+                  <Image
+                    width={16}
+                    height={16}
+                    alt={"gold-icon"}
+                    src={"/assets/gold-icon.png"}
+                  />
                 </div>
                 <p style={{ marginLeft: "4px" }}>GOLD</p>
               </div>

@@ -10,7 +10,6 @@ import { useCTFTime } from "@/hooks/useCTFTime";
 import { getSoundManifest } from "@/server/sounds";
 import { PickStageInitialData, PickStageWidget } from "@/widgets/PickStage";
 import { ScoreboardInitialData, ScoreboardWidget } from "@/widgets/Scoreboard";
-import Head from "next/head";
 
 type HomePageInitialData = {
   startAt: number;
@@ -76,17 +75,7 @@ function HomePage({
   if (!started) {
     return <PickStageWidget initialData={initialData} />;
   }
-  return (
-    <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-      <ScoreboardWidget initialData={initialData} endAt={endAt} />
-    </>
-  );
+  return <ScoreboardWidget initialData={initialData} endAt={endAt} />;
 }
 
 export default HomePage;

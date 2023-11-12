@@ -29,11 +29,10 @@ export function PickStageWidget({
   const { agentPicks } = useAgentPicks({ initialAgentPicks });
   return (
     <div className="w-screen h-screen bg-heropick bg-cover backdrop-blur-xl">
-      <div className="w-full h-full bg-white/5 backdrop-blur-sm">
-        <div className="p-5 h-full flex flex-row flex-wrap justify-between items-center">
+      <div className="w-full h-full bg-white/5 backdrop-blur-sm flex items-center justify-center">
+        <div className="p-5 grid grid-cols-10 gap-6">
           {teams.map((team, index) => (
             <AgentPick
-              layout="rtl"
               key={team.name}
               team={team}
               color={colors[index]}
