@@ -15,7 +15,7 @@ export function AgentPick({
   color: string;
 }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-[118px]">
       <div
         className={classNames(
           "shadow-[#000_0_0_10px_1px]",
@@ -23,7 +23,7 @@ export function AgentPick({
         )}
         style={{ borderColor: color }}
       >
-        <div className="w-[118px] h-[66px] bg-[#3d4857] relative">
+        <div className="w-full h-[66px] bg-[#3d4857] relative">
           {agent && (
             <Image
               width={118}
