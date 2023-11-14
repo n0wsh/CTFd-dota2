@@ -29,7 +29,7 @@ services:
     volumes:
       - .data/CTFd/logs:/var/log/CTFd
       - .data/CTFd/uploads:/var/uploads
-      - .:/opt/CTFd
+      - .:/opt/CTFd:ro
     depends_on:
       - db
     networks:
@@ -39,10 +39,10 @@ services:
     build: ./scoreboard
     restart: always
     volumes:
-      - .:/opt/CTFd
+      - .:/opt/CTFd:ro
     environment:
       - CTFD_API_URL=http://ctfd:8000/api/v1
-      - CTFD_API_KEY=c6838334763fd43b4c6c4025ddcfb110f593bc6877a2b548f059eeddaa0ca5fc
+      - CTFD_API_KEY=9de8b0ab2891ccb7ce139a2c20f920fdbdbbcb0f20a3b5560582d4f8fc758807
       # - NEXT_PUBLIC_BACKEND_URL=
     networks:
         default:

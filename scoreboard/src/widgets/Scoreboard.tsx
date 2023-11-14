@@ -80,16 +80,17 @@ export function ScoreboardWidget({
                   )}
                 >
                   <div className="h-full flex flex-row items-center col-span-2">
-                    <div className="w-16 border border-black ml-5">
+                    <div className="h-[55px] w-[97px] border border-black ml-5">
                       {agentPicks[team.name] && (
                         <Image
                           width={118}
-                          height={64}
+                          height={66}
                           className="opacity-100"
                           src={`/assets/agents/${
                             agentPicks[team.name]
                           }/icon.png`}
                           alt={`${agentPicks[team.name]} icon`}
+                          style={{ height: "100%" }}
                         />
                       )}
                     </div>
