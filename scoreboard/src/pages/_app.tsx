@@ -7,7 +7,6 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <TaskQueueProvider>
       <Component {...pageProps} />
-      <audio id="hero-audio" autoPlay></audio>
     </TaskQueueProvider>
   );
 }

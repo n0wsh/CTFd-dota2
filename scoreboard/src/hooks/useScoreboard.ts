@@ -9,6 +9,7 @@ import { useTaskQueue } from "@/contexts/TaskQueueContext";
 
 import { pickSound } from "@/core/sounds";
 import { playSound } from "@/core/SoundDispatcher";
+import { FirsBloodItem } from "@/server/firstblood";
 
 export function useScoreboard({
   endAt,
@@ -69,9 +70,13 @@ export function useScoreboard({
           return;
         }
 
+        const firstBlood: FirsBloodItem[] = await fetch(
+          "/api/firstblood"
+        ).then((res) => res.json());
         const newScoreboard: ScoreboardItem[] = await fetch(
           "/api/scoreboard"
         ).then((res) => res.json());
+        const firstBloodList = firstBlood.filter((el) => el.team_id === submission.team.id);
         const sound = pickSound({
           team: submission.team.name,
           agentPicks: agentPicksRef.current,
@@ -80,12 +85,31 @@ export function useScoreboard({
           newScoreboard,
         });
         taskQueue.push(async () => {
+          // Catch rejection here so state is still updated.
           if (!sound.special) {
-            // Catch rejection here so state is still updated.
-            await playSound("kill").catch(() => {});
+            await playSound("kill").catch(() => { });
+            let playedFirstBloods = JSON.parse(localStorage.getItem("firstBloodList") || "[]");
+            if (playedFirstBloods.length !== 0) {
+              let isFirstBloodPlayed = firstBloodList.some((el) => playedFirstBloods.includes(el.challenge_id));
+
+              if (isFirstBloodPlayed) {
+                await playSound(`${agentPicksRef.current[firstBloodList[0].team_id]}/firstblood`).catch(() => { });
+
+                playedFirstBloods.push(firstBloodList[firstBloodList.length - 1].challenge_id);
+
+                localStorage.setItem("firstBloodList", JSON.stringify([...playedFirstBloods]));
+              } else {
+                await playSound(sound.id);
+              }
+            } else {
+              await playSound("firstblood").catch(() => { });
+              await playSound(`${agentPicksRef.current[firstBloodList[0].team_id]}/firstblood`).catch(() => { })
+              let arr = [];
+              arr.push(firstBloodList[0].challenge_id);
+              localStorage.setItem("firstBloodList", JSON.stringify(arr));
+            }
           }
           setScoreboard(newScoreboard);
-          await playSound(sound.id);
         });
       }
     );
