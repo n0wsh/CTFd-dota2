@@ -70,13 +70,20 @@ export function useScoreboard({
           return;
         }
 
-        const firstBlood: FirsBloodItem[] = await fetch(
-          "/api/firstblood"
-        ).then((res) => res.json());
+        const firstBlood: FirsBloodItem[] = await fetch("/api/firstblood").then(
+          (res) => res.json()
+        );
         const newScoreboard: ScoreboardItem[] = await fetch(
           "/api/scoreboard"
         ).then((res) => res.json());
-        const firstBloodList = firstBlood.filter((el) => el.team_id === submission.team.id);
+        const firstBloodList = firstBlood.filter(
+          (el) => el.team_id === submission.team.id
+        );
+
+        const teamID = firstBloodList[firstBloodList.length - 1]?.team_id;
+
+        const matchingTeam = newScoreboard.find((team) => team.id === teamID);
+
         const sound = pickSound({
           team: submission.team.name,
           agentPicks: agentPicksRef.current,
@@ -87,23 +94,44 @@ export function useScoreboard({
         taskQueue.push(async () => {
           // Catch rejection here so state is still updated.
           if (!sound.special) {
-            await playSound("kill").catch(() => { });
-            let playedFirstBloods = JSON.parse(localStorage.getItem("firstBloodList") || "[]");
+            await playSound("kill").catch(() => {});
+            let playedFirstBloods = JSON.parse(
+              localStorage.getItem("firstBloodList") || "[]"
+            );
+
             if (playedFirstBloods.length !== 0) {
-              let isFirstBloodPlayed = firstBloodList.some((el) => playedFirstBloods.includes(el.challenge_id));
+              let isFirstBloodPlayed = firstBloodList.some((el) =>
+                playedFirstBloods.includes(el.challenge_id)
+              );
 
               if (isFirstBloodPlayed) {
-                await playSound(`${agentPicksRef.current[firstBloodList[0].team_id]}/firstblood`).catch(() => { });
+                if (matchingTeam !== undefined) {
+                  const teamName = matchingTeam.name;
+                  console.log(teamName);
+                  await playSound(
+                    `${agentPicksRef.current[teamName]}/firstblood`
+                  ).catch(() => {});
+                }
+                playedFirstBloods.push(
+                  firstBloodList[firstBloodList.length - 1].challenge_id
+                );
 
-                playedFirstBloods.push(firstBloodList[firstBloodList.length - 1].challenge_id);
-
-                localStorage.setItem("firstBloodList", JSON.stringify([...playedFirstBloods]));
+                localStorage.setItem(
+                  "firstBloodList",
+                  JSON.stringify([...playedFirstBloods])
+                );
               } else {
                 await playSound(sound.id);
               }
             } else {
-              await playSound("firstblood").catch(() => { });
-              await playSound(`${agentPicksRef.current[firstBloodList[0].team_id]}/firstblood`).catch(() => { })
+              await playSound("firstblood").catch(() => {});
+              if (matchingTeam !== undefined) {
+                const teamName = matchingTeam.name;
+                console.log(teamName);
+                await playSound(
+                  `${agentPicksRef.current[teamName]}/firstblood`
+                ).catch(() => {});
+              }
               let arr = [];
               arr.push(firstBloodList[0].challenge_id);
               localStorage.setItem("firstBloodList", JSON.stringify(arr));
