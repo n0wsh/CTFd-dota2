@@ -15,6 +15,19 @@ export type ScoreboardInitialData = {
   sounds: SoundsManifest;
 };
 
+const teams: Record<string, string> = {
+  rebels: "muis",
+  Juno3: "shutis",
+  "Tsuivan enjoyers": "shutis",
+  sanrio: "muis",
+  "🤡🤡🤡": "shutis",
+  "road to say togrog": "shutis",
+  ChatGPT: "shutis",
+  "0day!": "shutis",
+  "hackstreet.b0ys": "muis",
+  "3ula bag": "muis",
+};
+
 export function ScoreboardWidget({
   endAt,
   initialData: {
@@ -71,6 +84,7 @@ export function ScoreboardWidget({
             </div>
             {scoreboard.map((team, index) => {
               const textColor = "text-gray-200";
+              const universityOfTeam = teams[team.name];
               return (
                 <div
                   key={team.name}
@@ -80,7 +94,29 @@ export function ScoreboardWidget({
                   )}
                 >
                   <div className="h-full flex flex-row items-center col-span-2">
-                    <div className="h-[55px] w-[97px] border border-black ml-5">
+                    <div className="h-full flex justify-center items-center ml-5">
+                      {universityOfTeam ? (
+                        <Image
+                          width={36}
+                          height={36}
+                          className="opacity-100"
+                          src={
+                            universityOfTeam === "shutis"
+                              ? "/assets/mongolian-university-of-science-and-technology.png"
+                              : "/assets/national-university-of-mongolia.png"
+                          }
+                          alt={
+                            universityOfTeam === "shutis"
+                              ? "mongolian-university-of-science-and-technology"
+                              : "national-university-of-mongolia"
+                          }
+                          style={{ height: "100%" }}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                    <div className="h-[55px] w-[97px] border border-black ml-4">
                       {agentPicks[team.name] && (
                         <Image
                           width={118}
