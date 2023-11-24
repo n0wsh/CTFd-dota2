@@ -30,7 +30,7 @@ def load(app):
 	app.db.create_all()
 	load_api()
 
-	@agent_selection.route('/agent', methods=['GET'])
+	@agent_selection.route('/hero', methods=['GET'])
 	@authed_only
 	@require_team
 	def view_agent_page():
@@ -47,7 +47,7 @@ def load(app):
 			chosen_agents=list(map(lambda choice: choice.agent_name, AgentChoice.query.all())),
 		)
 
-	@agent_selection.route('/agent', methods=['POST'])
+	@agent_selection.route('/hero', methods=['POST'])
 	@authed_only
 	@require_team
 	def select_agent():
