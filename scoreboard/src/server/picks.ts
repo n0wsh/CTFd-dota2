@@ -27,7 +27,7 @@ export async function fetchAgentPicks(): Promise<Record<string, string>> {
       throw new Error("Response data is missing.");
     }
   } catch (error) {
-    console.error("Error fetching agent picks:", error);
+    console.error("Error fetching hero picks:", error);
     throw error;
   }
 }

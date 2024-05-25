@@ -59,7 +59,7 @@ export function ScoreboardWidget({
     setAudioStarted(true);
     audioMainMenu.autoplay = true;
     audioMainMenu.loop = true;
-    audioMainMenu.volume = 0.05;
+    audioMainMenu.volume = 0.1;
 
     return new Promise((resolve, reject) => {
       audioMainMenu.onended = resolve as () => void;

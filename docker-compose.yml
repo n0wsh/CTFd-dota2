@@ -42,7 +42,7 @@ services:
       - .:/opt/CTFd:ro
     environment:
       - CTFD_API_URL=http://ctfd:8000/api/v1
-      - CTFD_API_KEY=8546031b7b9ee5c6837e6cf45ded0b394e9d40a79b4a24219b16fa07e48f4e21
+      - CTFD_API_KEY=4cb65e2c07fe905a011d7be88594d8b512eefa13e685bda8a73d91db3bfebca3
       # - NEXT_PUBLIC_BACKEND_URL=
     networks:
         default:

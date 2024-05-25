@@ -22,7 +22,7 @@ agent_selection = Blueprint('agent_selection', __name__, template_folder='templa
 def load(app):
 	config(app)
 	if not app.config['VALORANT_WEBHOOK_URL']:
-		print('[Valorant] Webhook URL not set. Plugin disabled.')
+		print('[Dota2] Webhook URL not set. Plugin disabled.')
 		return
 
 	webhook = ValorantWebhook(app.config['VALORANT_WEBHOOK_URL'], app.config['VALORANT_WEBHOOK_SECRET'])
@@ -30,7 +30,7 @@ def load(app):
 	app.db.create_all()
 	load_api()
 
-	@agent_selection.route('/agent', methods=['GET'])
+	@agent_selection.route('/hero', methods=['GET'])
 	@authed_only
 	@require_team
 	def view_agent_page():
@@ -39,7 +39,7 @@ def load(app):
 		if team.captain_id != user.id:
 			return render_template('error.html', error="You are not the captain of this team")
 		if AgentChoice.query.filter_by(team_id=team.id).first() is not None:
-			return render_template('error.html', error="You have already selected agent")
+			return render_template('error.html', error="You have already selected hero")
 
 		return render_template(
 			'agent.html',
@@ -47,7 +47,7 @@ def load(app):
 			chosen_agents=list(map(lambda choice: choice.agent_name, AgentChoice.query.all())),
 		)
 
-	@agent_selection.route('/agent', methods=['POST'])
+	@agent_selection.route('/hero', methods=['POST'])
 	@authed_only
 	@require_team
 	def select_agent():
@@ -56,21 +56,21 @@ def load(app):
 		if team.captain_id != user.id:
 			return render_template('error.html', error="You are not the captain of this team")
 		if AgentChoice.query.filter_by(team_id=team.id).first() is not None:
-			return render_template('error.html', error="You have already selected agent")
+			return render_template('error.html', error="You have already selected hero")
 
 		req = request.form.to_dict()
 		agent = req['agent']
 		if agent == "":
-			return render_template('error.html', error="You must select an agent")
+			return render_template('error.html', error="You must select an hero")
 		if agent not in agent_list:
-			return render_template('error.html', error="Wrong agent")
+			return render_template('error.html', error="Wrong hero")
 		if AgentChoice.query.filter_by(agent_name=agent).count() >= 2:
-			return render_template('error.html', error="Agent is already picked")
+			return render_template('error.html', error="Hero is already picked")
 
 		if app.env == 'development':
 			team_name = team.name
-			print(f'[Valorant] Agent "{agent}" was selected by team "{team_name}"')
-			print(f'[Valorant] This message shows only in development mode. In production mode, the agent choice will be saved in server.')
+			print(f'[Dota2] Hero "{agent}" was selected by team "{team_name}"')
+			print(f'[Dota2] This message shows only in development mode. In production mode, the hero choice will be saved in server.')
 		else:
 			db.session.add(AgentChoice(agent_name=agent, team_id=user.team_id, team_name=team.name))
 			db.session.commit()
